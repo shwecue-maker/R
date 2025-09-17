@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty Budget Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎀 Hello Kitty Budget Calculator 🎀</h1>
+
+        <div class="calculator">
+            <div class="input-section">
+                <h2>Income 💰</h2>
+                <input type="number" id="income" placeholder="Enter your income">
+                
+                <h2>Expenses 🛍️</h2>
+                <div class="expense-item">
+                    <input type="text" class="expense-name" placeholder="Expense name">
+                    <input type="number" class="expense-amount" placeholder="Amount">
+                </div>
+                <button id="add-expense">+ Add another expense</button>
+            </div>
+
+            <div class="output-section">
+                <h2>Summary ✨</h2>
+                <p>Total Income: <span id="total-income">$0</span></p>
+                <p>Total Expenses: <span id="total-expenses">$0</span></p>
+                <p>Balance: <span id="balance">$0</span></p>
+            </div>
+
+            <button id="calculate">Calculate 💖</button>
+        </div>
+    </div>
+
+    <script>
+        const addExpenseBtn = document.getElementById('add-expense');
+        const calculator = document.querySelector('.calculator');
+        const calculateBtn = document.getElementById('calculate');
+
+        addExpenseBtn.addEventListener('click', () => {
+            const expenseSection = document.createElement('div');
+            expenseSection.classList.add('expense-item');
+            expenseSection.innerHTML = `
+                <input type="text" class="expense-name" placeholder="Expense name">
+                <input type="number" class="expense-amount" placeholder="Amount">
+            `;
+            calculator.querySelector('.input-section').insertBefore(expenseSection, addExpenseBtn);
+        });
+
+        calculateBtn.addEventListener('click', () => {
+            const income = parseFloat(document.getElementById('income').value) || 0;
+            const expenseAmounts = document.querySelectorAll('.expense-amount');
+            let totalExpenses = 0;
+
+            expenseAmounts.forEach(input => {
+                totalExpenses += parseFloat(input.value) || 0;
+            });
+
+            const balance = income - totalExpenses;
+
+            document.getElementById('total-income').innerText = `$${income.toFixed(2)}`;
+            document.getElementById('total-expenses').innerText = `$${totalExpenses.toFixed(2)}`;
+            document.getElementById('balance').innerText = `$${balance.toFixed(2)}`;
+
+            if(balance < 0) {
+                document.getElementById('balance').style.color = '#ff3366';
+            } else {
+                document.getElementById('balance').style.color = '#ff66b2';
+            }
+        });
+    </script>
+</body>
+</html>
